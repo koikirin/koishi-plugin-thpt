@@ -17,7 +17,7 @@ function generateReply(ranks: any) {
   const curtime = Date.now() / 1000
   if (ranks.h4.level >= 16 || ranks.h3.level >= 16) msg += '\n最高段位 ' + ranks.hdescription
 
-  let trend4, trend3
+  let trend4 = '', trend3 = ''
   if (ranks['4'].time_last > curtime - TREND_VALID_TIME && ranks['4'].trend?.length > 10) trend4 = ranks['4'].trend.slice(-10)
   if (ranks['3'].time_last > curtime - TREND_VALID_TIME && ranks['3'].trend?.length > 10) trend3 = ranks['3'].trend.slice(-10)
   if (trend4 || trend3) msg += `\n最近战绩 [${trend4}][${trend3}]`
@@ -34,7 +34,7 @@ export function apply(ctx: Context, config: Config) {
     .option('source', '-s <source>', { fallback: "mix" })
     .option('source', '-n', { value: "nodocchi" })
     .action(({ session, options }, username) => {
-      if (!username) return null
+      if (!username) return
       ctx.http.get(`${config.server}/rank`, {
         params: {
           username: username,
