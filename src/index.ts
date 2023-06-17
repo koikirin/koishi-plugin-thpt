@@ -30,11 +30,11 @@ function generateReply(ranks: any) {
 }
 
 export function apply(ctx: Context, config: Config) {
-  ctx.command('thpt <username>')
+  ctx.command('thpt <username>', '查询天凤PT')
     .option('source', '-s <source>', { fallback: "mix" })
     .option('source', '-n', { value: "nodocchi" })
     .action(({ session, options }, username) => {
-      if (!username) return
+      if (!username) return session.execute('thpt -h')
       ctx.http.get(`${config.server}/rank`, {
         params: {
           username: username,

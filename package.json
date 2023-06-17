@@ -1,7 +1,7 @@
 {
   "name": "@hieuzest/koishi-plugin-thpt",
   "description": "Query Tenhou PT",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -17,5 +17,8 @@
   ],
   "peerDependencies": {
     "koishi": "^4.13.1"
+  },
+  "koishi": {
+    "hidden": true
   }
 }
