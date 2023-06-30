@@ -7,7 +7,7 @@ export interface Config {
 }
 
 export const Config: Schema<Config> = Schema.object({
-  server: Schema.string().default('http://127.0.0.1:7235')
+  server: Schema.string().default('http://localhost:7235')
 })
 
 const TREND_VALID_TIME = 60 * 60 * 24 * 30
