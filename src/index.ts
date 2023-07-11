@@ -2,12 +2,16 @@ import { Context, Schema } from 'koishi'
 
 export const name = 'thpt'
 
+type Source = 'mix' | 'nodocchi' | 'database'
+
 export interface Config {
   server: string
+  defaultSource: Source
 }
 
 export const Config: Schema<Config> = Schema.object({
-  server: Schema.string().default('http://localhost:7235')
+  server: Schema.string().default('http://localhost:7235'),
+  defaultSource: Schema.union<Source>(['mix', 'nodocchi', 'database']).default('mix'),
 })
 
 const TREND_VALID_TIME = 60 * 60 * 24 * 30
@@ -31,8 +35,8 @@ function generateReply(ranks: any) {
 
 export function apply(ctx: Context, config: Config) {
   ctx.command('thpt <username>', '查询天凤PT')
-    .option('source', '-s <source>', { fallback: "mix" })
-    .option('source', '-n', { value: "nodocchi" })
+    .option('source', '-s <source>', { fallback: config.defaultSource })
+    .option('source', '-n', { value: 'nodocchi' })
     .action(({ session, options }, username) => {
       if (!username) return session.execute('thpt -h')
       ctx.http.get(`${config.server}/rank`, {
