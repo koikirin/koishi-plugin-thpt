@@ -41,14 +41,13 @@ export function apply(ctx: Context, config: Config) {
       if (!username) return session.execute('thpt -h')
       ctx.http.get(`${config.server}/rank`, {
         params: {
-          username: username,
-          source: options.source
-        }
+          username,
+          source: options.source,
+        },
       }).then(res => {
         session.send(generateReply(res))
       }, _ => {
         session.send('查询失败')
       })
     })
-
 }
