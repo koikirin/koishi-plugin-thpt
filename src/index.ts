@@ -34,7 +34,7 @@ function generateReply(ranks: any) {
 }
 
 export function apply(ctx: Context, config: Config) {
-  ctx.command('thpt <username>', '查询天凤PT')
+  ctx.command('thpt <username:rawtext>', '查询天凤PT')
     .option('source', '-s <source>', { fallback: config.defaultSource })
     .option('source', '-n', { value: 'nodocchi' })
     .action(({ session, options }, username) => {
