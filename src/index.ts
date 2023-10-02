@@ -2,7 +2,7 @@ import { Context, Schema } from 'koishi'
 
 export const name = 'thpt'
 
-type Source = 'mix' | 'nodocchi' | 'database'
+type Source = 'mix' | 'nodocchi' | 'local'
 
 export interface Config {
   server: string
@@ -11,7 +11,7 @@ export interface Config {
 
 export const Config: Schema<Config> = Schema.object({
   server: Schema.string().default('http://localhost:7235'),
-  defaultSource: Schema.union<Source>(['mix', 'nodocchi', 'database']).default('mix'),
+  defaultSource: Schema.union<Source>(['mix', 'nodocchi', 'local']).default('mix'),
 })
 
 const TREND_VALID_TIME = 60 * 60 * 24 * 30
@@ -37,17 +37,14 @@ export function apply(ctx: Context, config: Config) {
   ctx.command('thpt <username:rawtext>', '查询天凤PT')
     .option('source', '-s <source>', { fallback: config.defaultSource })
     .option('source', '-n', { value: 'nodocchi' })
-    .action(({ session, options }, username) => {
+    .action(async ({ session, options }, username) => {
       if (!username) return session.execute('thpt -h')
-      ctx.http.get(`${config.server}/rank`, {
+      const res = await ctx.http.get(`${config.server}/rank`, {
         params: {
           username,
           source: options.source,
         },
-      }).then(res => {
-        session.send(generateReply(res))
-      }, _ => {
-        session.send('查询失败')
-      })
+      }).catch(_ => null)
+      return res ? generateReply(res) : '查询失败'
     })
 }
