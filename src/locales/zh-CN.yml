@@ -1,0 +1,14 @@
+commands:
+  thpt:
+    description: 查询天凤PT
+    options:
+      bind: 绑定/清除当前用户
+      source-nodocchi: 数据有误时使用此选项同步
+    messages:
+      failed: 查询失败
+      highest-level: 最高段位
+      recent-results: 最近战绩
+      phoenix-time-4: 四麻首次升凤时间
+      highest-time-4: 最高段位达成时间
+      phoenix-time-3: 三麻首次升凤时间
+      highest-time-3: 最高段位达成时间
