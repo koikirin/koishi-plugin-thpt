@@ -1,5 +1,11 @@
 import { Context, Schema } from 'koishi'
 
+declare module 'koishi' {
+  interface User {
+    'thpt/bind': string
+  }
+}
+
 export const name = 'thpt'
 
 type Source = 'mix' | 'nodocchi' | 'local'
@@ -34,10 +40,18 @@ function generateReply(ranks: any) {
 }
 
 export function apply(ctx: Context, config: Config) {
-  ctx.command('thpt <username:rawtext>', '查询天凤PT')
+  ctx.model.extend('user', {
+    'thpt/bind': 'string',
+  })
+
+  ctx.command('thpt [username:rawtext]', '查询天凤PT')
     .option('source', '-s <source>', { fallback: config.defaultSource })
-    .option('source', '-n', { value: 'nodocchi' })
+    .option('source', '-n', { value: 'nodocchi', descPath: '数据有误时使用此选项同步' })
+    .option('bind', '-b', { descPath: '绑定至当前用户' })
+    .userFields(['thpt/bind'])
     .action(async ({ session, options }, username) => {
+      if (options.bind) session.user['thpt/bind'] = username ?? ''
+      username ||= session.user['thpt/bind']
       if (!username) return session.execute('thpt -h')
       const res = await ctx.http.get(`${config.server}/rank`, {
         params: {
