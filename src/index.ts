@@ -7,6 +7,7 @@ declare module 'koishi' {
 }
 
 export const name = 'thpt'
+export const inject = ['database']
 
 type Source = 'mix' | 'nodocchi' | 'local'
 
