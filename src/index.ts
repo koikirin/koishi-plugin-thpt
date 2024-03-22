@@ -55,7 +55,7 @@ export function apply(ctx: Context, config: Config) {
     .action(async ({ session, options }, username) => {
       if (options.bind) session.user['thpt/bind'] = username ?? ''
       username ||= session.user['thpt/bind']
-      if (!username) return options.bind ? '' : session.execute('thpt -h')
+      if (!username) return options.bind ? '' : session.execute('help thpt')
       const res = await ctx.http.get(`${config.server}/rank`, {
         params: {
           username,
